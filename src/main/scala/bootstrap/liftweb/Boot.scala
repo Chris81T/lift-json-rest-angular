@@ -6,12 +6,9 @@ import common._
 import http._
 import sitemap._
 
+import util.Helpers._
+
 import code.lib._
-
-/**
- * FLEX MENU BUILDER have a look for it -- Diego Medina
- */
-
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -46,5 +43,6 @@ class Boot {
     LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
 
     LiftRules.statelessDispatch.append(MovieHelper)
+    LiftRules.dispatch.append(SecuredMovieHelper.ensureLogin guard SecuredMovieHelper)
   }
 }
