@@ -159,7 +159,7 @@
                         };
                         // load movies from server
                         // moviesRequest(req);
-                        $http.get("movies/secured/from/" + req.from + "/to/" + req.to).success(function (movies) {
+                        $http.get("movies/forcomp2/from/" + req.from + "/to/" + req.to).success(function (movies) {
                             console.log("SUCCESSFUL HTTP GET REQUEST = " + movies);
                             $scope.movies = $scope.movies.concat(movies);
                         });

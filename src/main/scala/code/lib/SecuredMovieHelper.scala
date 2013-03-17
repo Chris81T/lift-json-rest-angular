@@ -2,15 +2,17 @@ package code.lib
 
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.util.Helpers
-import net.liftweb.util.Helpers._
 import net.liftweb.http.Req
-import java.util.Calendar
+import org.joda.time.{DateTimeConstants, DateTime}
 
 
 object SecuredMovieHelper extends RestHelper {
 
+  /*
+   you are only allowed to use that secured service on sunday
+   */
   val ensureLogin: PartialFunction[Req, Unit] = {
-    case _ if day(now) == Calendar.SUNDAY => // simple test
+    case _ if new DateTime().getDayOfWeek() == DateTimeConstants.SUNDAY  =>
   }
 
   serve {

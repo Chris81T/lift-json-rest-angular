@@ -40,20 +40,21 @@ object MovieHelper extends RestHelper {
         BadResponse()
       }
 
-    /*
-     Actually this case wont work! If you want to compile the code, please comment it out or remove it!
-     */
-//    case "movies" :: "forcomp" :: "from" :: from :: "to" :: to :: Nil JsonGet _ =>
-//      val response = for {
-//        fromAsInt <- Helpers.asInt(from)
-//        toAsInt <- Helpers.asInt(to)
-//      } yield MovieService.getMoviesAsJSON(fromAsInt, toAsInt)
-//      response.getOrElse(JNull)
+    case "movies" :: "forcomp1" :: "from" :: from :: "to" :: to :: Nil JsonGet _ =>
+      val response = for {
+        fromAsInt <- Helpers.asInt(from)
+        toAsInt <- Helpers.asInt(to)
+      } yield MovieService.getMoviesAsJSON(fromAsInt, toAsInt)
+      response.getOrElse(JNull): JValue
 
+    /*
+      This way is my preferred one: Actually I will do not find the specific message on client side, if converting from
+      or to will fail, while client has given some non-numeric value.
+     */
     case "movies" :: "forcomp2" :: "from" :: from :: "to" :: to :: Nil JsonGet _ =>
       for {
-        fromAsInt <- Helpers.asInt(from) ?~ "*from* could not be converted to an integer!" ~> 400
-        toAsInt <- Helpers.asInt(to) ?~ "*to* could not be converted to an integer!" ~> 400
+        fromAsInt <- Helpers.asInt(from) ?~ "*from* could not be converted to an integer!" ~> 404
+        toAsInt <- Helpers.asInt(to) ?~ "*to* could not be converted to an integer!" ~> 404
       } yield MovieService.getMoviesAsJSON(fromAsInt, toAsInt)
 
   }
